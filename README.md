@@ -215,13 +215,14 @@ cd yiwu-pro
 - 演示账号：`boss / boss123`（老板）、`clerk / clerk123`（店员）
 - 首次启动自动注入种子数据：8 种小商品、4 个客户（2 批发 2 外贸）、4 笔订单（覆盖 70 天老账、部分收款、新报价）
 - 环境变量：`PORT`（默认 8095）、`YW_DATA_DIR`（数据目录隔离，测试用）
+- 端口共存：8095 与 ride-pro（8090）、payment-pro（8080/8443）、cs-pro（8096）完全错开，四系统可同时运行
 
 ### 验证
 
 ```bash
-# 起隔离实例跑 65 项 API 断言（不污染演示库）
-YW_DATA_DIR=/tmp/yw-test PORT=8096 node server.js &
-node verify.mjs http://localhost:8096
+# 起隔离实例跑 65 项 API 断言（不污染演示库；8096 已被 cs-pro 占用，隔离实例用 8097）
+YW_DATA_DIR=/tmp/yw-test PORT=8097 node server.js &
+node verify.mjs http://localhost:8097
 ```
 
 验证覆盖：鉴权/权限拦截、应收口径与账龄、库存流水与盘点、订单状态机、超收拒绝、客户保护、照片校验与识图距离、1688 合并去重、单证生成与鉴权、员工生命周期、设置权限、定价接口。v1.0.0 结果：**65/65 通过**；浏览器实测开单→收款→库存→导入→定价→店员权限全链路通过，零控制台报错。

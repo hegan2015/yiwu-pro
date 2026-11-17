@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>功能套餐与定价 · 义乌小老板</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#f6f7f9;color:#1f2937}
+.wrap{max-width:960px;margin:0 auto;padding:32px 16px 60px}
+h1{text-align:center;font-size:28px;color:#b45309}
+.sub{text-align:center;color:#6b7280;margin:8px 0 24px;font-size:14px}
+.toggle{display:flex;justify-content:center;gap:0;margin-bottom:28px}
+.toggle button{padding:9px 22px;border:1px solid #d97706;background:#fff;color:#b45309;font-size:14px;cursor:pointer}
+.toggle button:first-child{border-radius:999px 0 0 999px}
+.toggle button:last-child{border-radius:0 999px 999px 0;border-left:none}
+.toggle button.active{background:#d97706;color:#fff;font-weight:600}
+.save-tag{font-size:12px;background:#d1fae5;color:#047857;border-radius:999px;padding:2px 8px;margin-left:6px}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.plan{background:#fff;border-radius:16px;padding:24px 20px;box-shadow:0 1px 4px rgba(0,0,0,.06);border:2px solid transparent;display:flex;flex-direction:column}
+.plan.hot{border-color:#d97706;position:relative}
+.hot-tag{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#d97706;color:#fff;font-size:12px;padding:3px 14px;border-radius:999px}
+.plan h2{font-size:19px}
+.tagline{color:#6b7280;font-size:13px;margin:6px 0 14px;min-height:36px}
+.price{font-size:32px;font-weight:700;color:#b45309}
+.price small{font-size:13px;color:#6b7280;font-weight:400}
+.per-year{font-size:12px;color:#059669;margin-top:2px;min-height:16px}
+ul{list-style:none;margin:16px 0 20px;flex:1}
+li{padding:6px 0;font-size:14px;border-bottom:1px dashed #e5e7eb}
+li::before{content:"✓ ";color:#059669;font-weight:700}
+.cta{display:block;text-align:center;background:#d97706;color:#fff;text-decoration:none;padding:11px;border-radius:8px;font-size:15px}
+.cta.ghost{background:#fff;color:#b45309;border:1px solid #d97706}
+.note{margin-top:28px;background:#fff;border-radius:12px;padding:18px;font-size:13px;color:#6b7280;line-height:1.9}
+.note b{color:#1f2937}
+table.cmp{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px;background:#fff}
+table.cmp th,table.cmp td{border:1px solid #e5e7eb;padding:8px 10px;text-align:center}
+table.cmp th{background:#fef3c7;color:#b45309}
+table.cmp td:first-child{text-align:left}
+.back{display:block;text-align:center;margin-top:24px;color:#d97706;text-decoration:none;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>义乌小老板 · 功能套餐与定价</h1>
+  <div class="sub">按你需要的功能选套餐，随时升级，数据无缝保留</div>
+  <div class="toggle">
+    <button id="btn-month" class="active" onclick="setCycle('month')">按月付</button>
+    <button id="btn-year" onclick="setCycle('year')">按年付<span class="save-tag">省 2 个月</span></button>
+  </div>
+  <div class="plans" id="plans"></div>
+
+  <div class="note">
+    <b>功能对比一览</b>
+    <table class="cmp">
+      <thead><tr><th>功能模块</th><th>开单版</th><th>进销存版</th><th>外贸全能版</th></tr></thead>
+      <tbody>
+        <tr><td>手机开单 / ¥$ 双币种报价</td><td>✓</td><td>✓</td><td>✓</td></tr>
+        <tr><td>应收对账 + 账龄催款</td><td>✓</td><td>✓</td><td>✓</td></tr>
+        <tr><td>商品照片档案</td><td>—</td><td>✓</td><td>✓</td></tr>
+        <tr><td>精确库存（流水 / 盘点 / 预警）</td><td>—</td><td>✓</td><td>✓</td></tr>
+        <tr><td>拍照识货（以图搜图）</td><td>—</td><td>✓</td><td>✓</td></tr>
+        <tr><td>1688 订单导入</td><td>—</td><td>✓</td><td>✓</td></tr>
+        <tr><td>多账号权限（老板 / 店员）</td><td>1 账号</td><td>3 账号</td><td>10 账号</td></tr>
+        <tr><td>商业发票 / 装箱单（中英双语）</td><td>—</td><td>—</td><td>✓</td></tr>
+        <tr><td>箱规自动算体积毛净重</td><td>—</td><td>—</td><td>✓</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:12px">
+      · 当前为演示系统，<b>所有功能免费体验</b>（演示账号 boss / boss123）。<br>
+      · 定价为产品设计目标价，正式商用前会结合商户访谈调整。<br>
+      · 年付相当于付 10 个月用 12 个月；升级套餐按剩余时长折算补差价。
+    </div>
+  </div>
+  <a class="back" href="/">← 返回系统登录</a>
+</div>
+<script>
+let cycle = 'month';
+let plans = [];
+async function load() {
+  const res = await fetch('/api/plans');
+  plans = await res.json();
+  render();
+}
+function setCycle(c) {
+  cycle = c;
+  document.getElementById('btn-month').classList.toggle('active', c === 'month');
+  document.getElementById('btn-year').classList.toggle('active', c === 'year');
+  render();
+}
+function render() {
+  document.getElementById('plans').innerHTML = plans.map((p, i) => {
+    const price = cycle === 'month' ? p.priceMonthly : Math.round(p.priceYearly / 12);
+    const hot = i === 1;
+    return '<div class="plan' + (hot ? ' hot' : '') + '">' +
+      (hot ? '<div class="hot-tag">最多商户选择</div>' : '') +
+      '<h2>' + p.name + '</h2>' +
+      '<div class="tagline">' + p.tagline + '</div>' +
+      '<div class="price">¥' + price + '<small> /月</small></div>' +
+      '<div class="per-year">' + (cycle === 'year' ? '年付 ¥' + p.priceYearly + '，省 ¥' + (p.priceMonthly * 12 - p.priceYearly) : '年付 ¥' + p.priceYearly + ' 更划算') + '</div>' +
+      '<ul>' + p.features.map(f => '<li>' + f + '</li>').join('') + '</ul>' +
+      '<a class="cta' + (hot ? '' : ' ghost') + '" href="/">免费试用</a>' +
+      '</div>';
+  }).join('');
+}
+load();
+</script>
+</body>
+</html>

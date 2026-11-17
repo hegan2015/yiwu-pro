@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>义乌小老板 · 开单对账</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div id="login" class="login-wrap hidden">
+  <div class="login-card">
+    <div class="login-logo">义乌小老板</div>
+    <div class="login-sub">开单 · 对账 · 库存 · 外贸单证</div>
+    <form id="login-form">
+      <label>用户名<input id="login-user" autocomplete="username" placeholder="boss 或 clerk" required></label>
+      <label>密码<input id="login-pass" type="password" autocomplete="current-password" placeholder="密码" required></label>
+      <button class="btn btn-block" type="submit">登 录</button>
+    </form>
+    <div class="login-hint">演示账号：boss / boss123（老板）<br>clerk / clerk123（店员）</div>
+    <a class="login-pricing" href="/pricing.html">查看功能套餐与定价 →</a>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+  <header id="topbar">
+    <div class="topbar-title">义乌小老板</div>
+    <div class="topbar-user" id="topbar-user"></div>
+  </header>
+  <main id="main"></main>
+  <nav id="tabbar">
+    <button data-tab="new" onclick="setTab('new')"><span class="tab-ico">🧾</span>开单</button>
+    <button data-tab="orders" onclick="setTab('orders')"><span class="tab-ico">📋</span>订单</button>
+    <button data-tab="recv" onclick="setTab('recv')"><span class="tab-ico">💰</span>应收</button>
+    <button data-tab="products" onclick="setTab('products')"><span class="tab-ico">📦</span>货品</button>
+    <button data-tab="more" onclick="setTab('more')"><span class="tab-ico">⚙️</span>更多</button>
+  </nav>
+</div>
+
+<div id="modal-root"></div>
+<div id="toast" class="hidden"></div>
+<input type="file" id="recognize-input" accept="image/*" capture="environment" class="hidden">
+
+<script src="/app.js"></script>
+</body>
+</html>
